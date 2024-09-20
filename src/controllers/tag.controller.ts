@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import tagService from "../services/tag.service.ts";
-import { tagSchema, updateTagSchema } from "./../validations/tag.validation";
+import { tagSchema, updateTagSchema } from "../validations/tag.validation";
 
 class TagController {
   async create(req: Request, res: Response) {
@@ -11,19 +11,16 @@ class TagController {
     const existingTag = await tagService.getTagByDescription(
       req.body.description
     );
-    if (existingTag) {
+    if (existingTag)
       return res
         .status(400)
-        .json({ message: "Uma tag com essa descrição já existe." });
-    }
+        .json({ message: "Tag com essa descrição já existe." });
 
     try {
-      console.log("Dados recebidos:", req.body);
       const tag = await tagService.createTag(req.body);
-      res.status(201).json(tag);
+      return res.status(201).json(tag);
     } catch (err: any) {
-      console.error("Erro ao criar a tag:", err);
-      res
+      return res
         .status(500)
         .json({ message: "Erro ao criar a tag.", error: err.message });
     }
@@ -32,9 +29,9 @@ class TagController {
   async getAll(req: Request, res: Response) {
     try {
       const tags = await tagService.getTags();
-      res.json(tags);
+      return res.json(tags);
     } catch (err) {
-      res.status(500).json({ message: "Erro ao buscar as tags." });
+      return res.status(500).json({ message: "Erro ao buscar as tags." });
     }
   }
 
@@ -42,9 +39,10 @@ class TagController {
     try {
       const tag = await tagService.getTagById(req.params.id);
       if (!tag) return res.status(404).json({ message: "Tag não encontrada." });
-      res.json(tag);
+
+      return res.json(tag);
     } catch (err) {
-      res.status(500).json({ message: "Erro ao buscar a tag." });
+      return res.status(500).json({ message: "Erro ao buscar a tag." });
     }
   }
 
@@ -53,12 +51,24 @@ class TagController {
     if (error)
       return res.status(400).json({ message: error.details[0].message });
 
+    if (req.body.description) {
+      const existingTag = await tagService.getTagByDescription(
+        req.body.description
+      );
+      if (existingTag && existingTag.id !== req.params.id) {
+        return res
+          .status(400)
+          .json({ message: "Tag com essa descrição já existe." });
+      }
+    }
+
     try {
       const tag = await tagService.updateTag(req.params.id, req.body);
       if (!tag) return res.status(404).json({ message: "Tag não encontrada." });
-      res.json(tag);
+
+      return res.json(tag);
     } catch (err) {
-      res.status(500).json({ message: "Erro ao atualizar a tag." });
+      return res.status(500).json({ message: "Erro ao atualizar a tag." });
     }
   }
 
@@ -66,9 +76,10 @@ class TagController {
     try {
       const tag = await tagService.deleteTag(req.params.id);
       if (!tag) return res.status(404).json({ message: "Tag não encontrada." });
-      res.status(204).send();
+
+      return res.status(204).send();
     } catch (err) {
-      res.status(500).json({ message: "Erro ao deletar a tag." });
+      return res.status(500).json({ message: "Erro ao deletar a tag." });
     }
   }
 }
