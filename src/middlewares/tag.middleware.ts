@@ -12,6 +12,6 @@ export const validateTagExists = async (
   if (!existingTag) {
     return res.status(404).json({ message: "Tag não encontrada." });
   }
-
   next();
 };
+

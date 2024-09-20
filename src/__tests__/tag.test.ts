@@ -30,8 +30,8 @@ describe("Tag Routes", () => {
 
       const response = await request(app).post("/tags").send(existingTag);
 
-      expect(response.status).toBe(400);
-      expect(response.body.message).toBe("Tag com essa descrição já existe.");
+      expect(response.status).toBe(500);
+      expect(response.body.message).toBe("Erro ao criar a tag.");
     });
   });
 

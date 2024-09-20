@@ -11,26 +11,39 @@ model Task {
   id          String    @id @default(uuid())
   title       String
   description String
-  status      String    @default("pending")
-  tags        TaskTag[]
+  status      Status    @default(pending)
+  tags        Tag[]
+  priority    Priority  @default(medium)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  Comment     Comment[]
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  content   String
+  taskId    String
+  task      Task     @relation(fields: [taskId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+enum Priority {
+  low
+  medium
+  high
+}
+
+enum Status {
+  pending
+  doing
+  completed
 }
 
 model Tag {
-  id          String    @id @default(uuid())
-  description String    @unique
+  id          String   @id @default(uuid())
+  description String   @unique
   color       String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  tasks       TaskTag[]
-}
-
-model TaskTag {
-  task   Task   @relation(fields: [taskId], references: [id])
-  taskId String
-  tag    Tag    @relation(fields: [tagId], references: [id])
-  tagId  String
-
-  @@id([taskId, tagId])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  Task        Task[]
 }
