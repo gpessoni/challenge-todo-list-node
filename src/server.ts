@@ -1,5 +1,7 @@
 import express, { Request, Response } from "express";
 import tagRoutes from "./routes/tag.routes";
+import taskRoutes from "./routes/task.routes";
+import commentRoutes from "./routes/comment.routes";
 
 const app = express();
 const port = 3000;
@@ -11,6 +13,8 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/tags", tagRoutes);
+app.use("/task", taskRoutes);
+app.use("/comment", commentRoutes);
 
 if (process.env.NODE_ENV !== "test") {
   app.listen(port, () => {

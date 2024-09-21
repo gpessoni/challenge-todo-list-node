@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import tagService from "../services/tag.service.ts";
+import tagService from "../services/tag.service";
 import { tagSchema, updateTagSchema } from "../validations/tag.validation";
 import { handleError } from "../utils/errorHandler";
 
