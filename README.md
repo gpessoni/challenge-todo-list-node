@@ -9,42 +9,12 @@ This project is a REST API for managing a to-do list system. The backend was dev
 
 ## Project Setup
 
-1. **Rename the `.env_example` file to `.env`.**
+1. **Build and run the application using Docker:**
 
-   - This file contains essential environment variables for the application, such as database credentials.
-
-2. **Install dependencies:**
-
-   ```bash
-   npm install
-   ```
-
-   - This command installs all the dependencies listed in the `package.json` file.
-
-3. **Start the database container:**
-
-   ```bash
-   docker-compose up -d
-   ```
-
-   - This command uses Docker Compose to create and run a PostgreSQL container in the background.
-
-4. **Run Prisma migrations:**
-
-   ```bash
-   npx prisma migrate dev
-   ```
-
-   - This command applies the database migrations, creating the necessary tables and structures.
-
-5. **Start the backend server:**
-
-   ```bash
-   npm run dev
-   ```
-
-   - This command starts the backend server in development mode, allowing you to test and develop the API.
-
+ ```bash
+   docker-compose up --build
+  ```
+  
 ## Testing
 
 - **Run Tests:**
