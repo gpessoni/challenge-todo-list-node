@@ -1,4 +1,4 @@
-# TODO List Generator API
+# TODO List  API
 
 This project is a REST API for managing a to-do list system. The backend was developed using Node.js, Prisma as the ORM, and PostgreSQL as the database.
 
