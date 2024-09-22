@@ -18,8 +18,14 @@ class TaskController {
   }
 
   async getAll(req: Request, res: Response) {
+    const { status, page, limit } = req.query;
+
     try {
-      const tasks = await taskService.getTasks();
+      const tasks = await taskService.getTasks(
+        status as string,
+        page ? Number(page) : undefined, 
+        limit ? Number(limit) : undefined 
+      );
       return res.json(tasks);
     } catch (err) {
       return handleError(res, err, "Erro ao buscar as tarefas.");

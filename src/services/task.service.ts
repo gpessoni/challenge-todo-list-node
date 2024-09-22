@@ -24,10 +24,31 @@ class TaskService {
     });
   }
 
-  async getTasks() {
-    return prisma.task.findMany({
+  async getTasks(status?: string, page?: number, limit?: number) {
+    const filters: { status?: Status } = {};
+
+    if (
+      status &&
+      (status === "pending" || status === "doing" || status === "completed")
+    ) {
+      filters.status = status as Status; 
+    }
+
+    if (!page || !limit) {
+      return prisma.task.findMany({
+        where: filters,
+        include: { tags: true, Comment: true },
+      });
+    }
+
+    const tasks = await prisma.task.findMany({
+      where: filters,
       include: { tags: true, Comment: true },
+      take: limit, 
+      skip: (page - 1) * limit, 
     });
+
+    return tasks;
   }
 
   async getTaskById(id: string) {
