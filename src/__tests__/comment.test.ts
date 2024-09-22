@@ -1,5 +1,5 @@
 import request from "supertest";
-import app from "../server"; // Seu servidor Express
+import app from "../server"; 
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -14,7 +14,7 @@ describe("Comment Routes", () => {
     await prisma.task.deleteMany({});
   });
 
-  describe("POST /comment", () => {
+  describe("POST /comments", () => {
     it("deve criar um novo comentário", async () => {
       const task = await prisma.task.create({
         data: { title: "Test Task", description: "Task description" },
@@ -22,7 +22,7 @@ describe("Comment Routes", () => {
 
       const newComment = { content: "Novo comentário", taskId: task.id };
 
-      const response = await request(app).post("/comment").send(newComment);
+      const response = await request(app).post("/comments").send(newComment);
 
       expect(response.status).toBe(201);
       expect(response.body.content).toEqual(newComment.content);
@@ -35,13 +35,13 @@ describe("Comment Routes", () => {
         taskId: "invalid-task-id",
       };
 
-      const response = await request(app).post("/comment").send(newComment);
+      const response = await request(app).post("/comments").send(newComment);
 
       expect(response.status).toBe(400);
     });
   });
 
-  describe("GET /comment/task/:taskId", () => {
+  describe("GET /comments/task/:taskId", () => {
     it("deve retornar todos os comentários de uma tarefa", async () => {
       const task = await prisma.task.create({
         data: { title: "Test Task", description: "Task description" },
@@ -53,7 +53,7 @@ describe("Comment Routes", () => {
       ];
       await prisma.comment.createMany({ data: commentsToCreate });
 
-      const response = await request(app).get(`/comment/task/${task.id}`);
+      const response = await request(app).get(`/comments/task/${task.id}`);
 
       expect(response.status).toBe(200);
       expect(response.body.length).toBe(2);
@@ -66,14 +66,14 @@ describe("Comment Routes", () => {
     });
 
     it("deve retornar erro se a tarefa não for encontrada", async () => {
-      const response = await request(app).get("/comment/task/999");
+      const response = await request(app).get("/comments/task/999");
 
       expect(response.status).toBe(404);
       expect(response.body.message).toBe("Tarefa não encontrada.");
     });
   });
 
-  describe("GET /comment/:id", () => {
+  describe("GET /comments/:id", () => {
     it("deve retornar um comentário existente", async () => {
       const task = await prisma.task.create({
         data: { title: "Test Task", description: "Task description" },
@@ -83,7 +83,7 @@ describe("Comment Routes", () => {
         data: { content: "Comentário Teste", taskId: task.id },
       });
 
-      const response = await request(app).get(`/comment/${createdComment.id}`);
+      const response = await request(app).get(`/comments/${createdComment.id}`);
 
       expect(response.status).toBe(200);
       expect(response.body.id).toEqual(createdComment.id);
@@ -91,14 +91,14 @@ describe("Comment Routes", () => {
     });
 
     it("deve retornar erro se o comentário não for encontrado", async () => {
-      const response = await request(app).get("/comment/999");
+      const response = await request(app).get("/comments/999");
 
       expect(response.status).toBe(404);
       expect(response.body.message).toBe("Comentários Não encontrados");
     });
   });
 
-  describe("PUT /comment/:id", () => {
+  describe("PUT /comments/:id", () => {
     it("deve atualizar um comentário existente", async () => {
       const task = await prisma.task.create({
         data: { title: "Test Task", description: "Task description" },
@@ -110,7 +110,7 @@ describe("Comment Routes", () => {
       const updatedComment = { content: "Comentário Atualizado" };
 
       const response = await request(app)
-        .put(`/comment/${createdComment.id}`)
+        .put(`/comments/${createdComment.id}`)
         .send(updatedComment);
 
       expect(response.status).toBe(200);
@@ -121,7 +121,7 @@ describe("Comment Routes", () => {
       const updatedComment = { content: "Comentário Inexistente" };
 
       const response = await request(app)
-        .put("/comment/999")
+        .put("/comments/999")
         .send(updatedComment);
 
       expect(response.status).toBe(404);
@@ -129,7 +129,7 @@ describe("Comment Routes", () => {
     });
   });
 
-  describe("DELETE /comment/:id", () => {
+  describe("DELETE /comments/:id", () => {
     it("deve deletar um comentário com sucesso", async () => {
       const task = await prisma.task.create({
         data: { title: "Test Task", description: "Task description" },
@@ -140,14 +140,14 @@ describe("Comment Routes", () => {
       });
 
       const response = await request(app).delete(
-        `/comment/${createdComment.id}`
+        `/comments/${createdComment.id}`
       );
 
       expect(response.status).toBe(204);
     });
 
     it("deve retornar erro se o comentário não for encontrado para deletar", async () => {
-      const response = await request(app).delete("/comment/999");
+      const response = await request(app).delete("/comments/999");
 
       expect(response.status).toBe(404);
       expect(response.body.message).toBe("Comentários Não encontrados");

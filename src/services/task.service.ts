@@ -37,7 +37,7 @@ class TaskService {
     if (!page || !limit) {
       return prisma.task.findMany({
         where: filters,
-        include: { tags: true, Comment: true },
+        include: { tags: true },
       });
     }
 
