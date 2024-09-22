@@ -13,8 +13,6 @@ COPY . ./
 
 RUN cp .env_example .env
 
-RUN npx prisma migrate dev
-
-EXPOSE 8080
+EXPOSE 3000
 
 CMD ["npm", "run", "dev"]

@@ -1,4 +1,4 @@
-version: "3.4"
+version: "3.8"
 
 services:
   db:
@@ -23,6 +23,7 @@ services:
       - "3000:3000"
     depends_on:
       - db
+    command: sh -c "until nc -z db 5432; do echo 'Waiting for database...'; sleep 2; done; npx prisma migrate dev && npm run dev"
 
 volumes:
   postgres-data:
