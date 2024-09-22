@@ -14,7 +14,15 @@ services:
     ports:
       - 5432:5432
 
+  backend:
+    build: .
+    container_name: todo-backend
+    environment:
+      DATABASE_URL: "postgresql://postgres:postgres@db:5432/todo-node"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+
 volumes:
   postgres-data:
-  node-modules-front:
-  next-frontend:

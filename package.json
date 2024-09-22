@@ -5,6 +5,7 @@
   "scripts": {
     "test": "jest --runInBand",
     "dev": "ts-node-dev src/server.ts",
+    "start": "ts-node-dev src/server.ts",
     "seed": "ts-node prisma/seed.ts"
   },
   "keywords": [],
