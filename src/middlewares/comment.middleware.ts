@@ -16,13 +16,16 @@ export const validateCommentExists = async (
   next();
 };
 
-
 export const validateTaskExists = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const taskId = req.params.taskId; 
+  const taskId = req.body.taskId || req.params.taskId; 
+
+  if (!taskId) {
+    return res.status(400).json({ message: "taskId é obrigatório." });
+  }
 
   const existingTask = await taskService.getTaskById(taskId);
 
