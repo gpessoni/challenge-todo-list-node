@@ -1,5 +1,5 @@
 import request from "supertest";
-import app from "./../server";
+import app from "../server";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -18,6 +18,8 @@ describe("Task Routes", () => {
       const newTask = {
         title: "Nova Tarefa",
         description: "Descrição da tarefa",
+        status: "pending",
+        priority: "high",
       };
 
       const response = await request(app).post("/tasks").send(newTask);
@@ -32,8 +34,18 @@ describe("Task Routes", () => {
     it("deve retornar todas as tarefas", async () => {
       await prisma.task.createMany({
         data: [
-          { title: "Tarefa 1", description: "Descrição 1" },
-          { title: "Tarefa 2", description: "Descrição 2" },
+          {
+            title: "Tarefa 1",
+            description: "Descrição 1",
+            status: "pending",
+            priority: "high",
+          },
+          {
+            title: "Tarefa 1",
+            description: "Descrição 1",
+            status: "pending",
+            priority: "high",
+          },
         ],
       });
 

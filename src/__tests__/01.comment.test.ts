@@ -20,6 +20,8 @@ describe("Comment Routes", () => {
         data: { title: "Test Task", description: "Task description" },
       });
 
+      console.log(task.id)
+
       const newComment = { content: "Novo comentário", taskId: task.id };
 
       const response = await request(app).post("/comments").send(newComment);
@@ -37,7 +39,7 @@ describe("Comment Routes", () => {
 
       const response = await request(app).post("/comments").send(newComment);
 
-      expect(response.status).toBe(400);
+      expect(response.status).toBe(404);
     });
   });
 

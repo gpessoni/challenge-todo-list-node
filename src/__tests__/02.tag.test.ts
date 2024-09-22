@@ -1,5 +1,5 @@
 import request from "supertest";
-import app from "./../server"; // Seu servidor Express
+import app from "../server"; // Seu servidor Express
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
