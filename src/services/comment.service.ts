@@ -13,6 +13,12 @@ class CommentService {
   }
 
   async getCommentsByTask(taskId: string) {
+    const findTask = await prisma.task.findUnique({ where: { id: taskId } });
+
+    if (!findTask) {
+      throw new Error("Task not found");
+    }
+
     return prisma.comment.findMany({
       where: { taskId },
     });
@@ -21,6 +27,9 @@ class CommentService {
   async getCommentById(id: string) {
     return prisma.comment.findUnique({
       where: { id },
+      include: {
+        task: true,
+      },
     });
   }
 

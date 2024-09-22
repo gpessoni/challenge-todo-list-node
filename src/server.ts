@@ -13,8 +13,8 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/tags", tagRoutes);
-app.use("/task", taskRoutes);
-app.use("/comment", commentRoutes);
+app.use("/tasks", taskRoutes);
+app.use("/comments", commentRoutes);
 
 if (process.env.NODE_ENV !== "test") {
   app.listen(port, () => {

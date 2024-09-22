@@ -1,11 +1,10 @@
 import { Router } from "express";
 import commentController from "../controllers/comment.controller";
-import { validateTaskExists } from "../middlewares/task.middleware";
-import { validateCommentExists } from "../middlewares/comment.middleware";
+import { validateCommentExists, validateTaskExists } from "../middlewares/comment.middleware";
 
 const router = Router();
 
-router.post("/", commentController.create); // Criação de comentário
+router.post("/", commentController.create); 
 router.get("/task/:taskId", validateTaskExists, commentController.getAllByTask); 
 router.get("/:id", validateCommentExists, commentController.getById); 
 router.put("/:id", validateCommentExists, commentController.update); 

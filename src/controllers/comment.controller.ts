@@ -34,8 +34,6 @@ class CommentController {
   async getById(req: Request, res: Response) {
     try {
       const comment = await commentService.getCommentById(req.params.id);
-      if (!comment)
-        return res.status(404).json({ message: "Comentário não encontrado." });
       return res.json(comment);
     } catch (err) {
       return handleError(res, err, "Erro ao buscar o comentário.");
